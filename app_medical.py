@@ -32,13 +32,13 @@ RANGE_NAME = 'Feuille 1'
 
 st.set_page_config(layout='wide')
 
-# Display the club logo at the top right
-logo_path = '/Users/fcvmathieu/Desktop/logo.png'
+# Display the club logo from GitHub at the top right
+logo_url = 'https://raw.githubusercontent.com/FC-Versailles/care/main/assets/Versailles.png'
 col1, col2 = st.columns([9, 1])
 with col1:
     st.title("Médical | FC Versailles")
 with col2:
-    st.image(logo_path, use_container_width=True)
+    st.image(logo_url, use_container_width=True)
     
 # Add a horizontal line to separate the header
 st.markdown("<hr style='border:1px solid #ddd' />", unsafe_allow_html=True)
