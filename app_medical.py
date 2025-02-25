@@ -33,7 +33,7 @@ RANGE_NAME = 'Feuille 1'
 st.set_page_config(layout='wide')
 
 # Display the club logo from GitHub at the top right
-logo_url = 'https://raw.githubusercontent.com/FC-Versailles/care/main/assets/Versailles.png'
+logo_url = 'https://raw.githubusercontent.com/FC-Versailles/care/main/assets/logo.png'
 col1, col2 = st.columns([9, 1])
 with col1:
     st.title("Médical | FC Versailles")
