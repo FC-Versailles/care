@@ -98,7 +98,9 @@ if 'Date' in df.columns:
 
 # Page Navigation
 st.sidebar.title("FC Versailles Medical")
-page = st.sidebar.selectbox("Select Page", ["Rapport Quotidien","Historique du Joueur", "Rappport de blessure","Bilan Médical"])
+page = st.sidebar.selectbox(
+    "Select Page",
+    ["Rapport Quotidien", "Historique du Joueur", "Rappport de blessure", "Bilan Médical", "Planification"])
 
 if page == "Historique du Joueur":
     st.title("Fiche Joueur")
@@ -263,3 +265,33 @@ elif page == "Bilan Médical":
             st.dataframe(motif_data[available_columns], use_container_width=True)
         else:
             st.write(f"Aucun cas de {motif} durant cette semaine.")
+            
+
+elif page == "Planification":
+    st.title("📄 Planification de Réathlétisation")
+
+    pdf_url = "https://raw.githubusercontent.com/FC-Versailles/care/main/Planification%20Cédric.pdf"
+
+    # Aperçu intégré via iframe (Google Docs Viewer)
+    st.markdown(
+        f"""
+        <iframe src="https://docs.google.com/gview?url={pdf_url}&embedded=true"
+                width="100%" height="800px" frameborder="0"></iframe>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Option de téléchargement direct du PDF depuis GitHub
+    st.markdown(
+        f"[📥 Télécharger le PDF directement]({pdf_url})",
+        unsafe_allow_html=True
+    )
+
+
+
+
+
+
+
+
+
