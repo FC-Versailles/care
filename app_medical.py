@@ -270,7 +270,7 @@ elif page == "Bilan Médical":
 elif page == "Planification":
     st.title("📄 Planification de Réathlétisation")
 
-    pdf_url = "https://raw.githubusercontent.com/FC-Versailles/care/main/Planification%20Cédric.pdf"
+    pdf_url = "https://github.com/FC-Versailles/care/blob/main/planification_ce.pdf"
 
     # Aperçu intégré via iframe (Google Docs Viewer)
     st.markdown(
