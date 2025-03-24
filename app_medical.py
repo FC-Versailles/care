@@ -23,6 +23,8 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from matplotlib.backends.backend_pdf import PdfPages
 import plotly.express as px
+import base64
+
 
 # Constants for Google Sheets
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -270,22 +272,19 @@ elif page == "Bilan Médical":
 elif page == "Planification":
     st.title("📄 Planification de Réathlétisation")
 
-    pdf_url = "https://raw.githubusercontent.com/FC-Versailles/care/main/Planification_Cedric.pdf"
+    # Charger le PDF localement si uploadé ou depuis une URL avec téléchargement
+    pdf_url = "https://raw.githubusercontent.com/FC-Versailles/care/main/planification_ce.pdf"
 
-    # Aperçu intégré via iframe (Google Docs Viewer)
+    # Affichage PDF via HTML <embed> (pas Google Docs)
     st.markdown(
         f"""
-        <iframe src="https://docs.google.com/gview?url={pdf_url}&embedded=true"
-                width="100%" height="800px" frameborder="0"></iframe>
+        <embed src="{pdf_url}" width="100%" height="800px" type="application/pdf">
         """,
         unsafe_allow_html=True
     )
 
-    # Option de téléchargement direct du PDF depuis GitHub
-    st.markdown(
-        f"[📥 Télécharger le PDF directement]({pdf_url})",
-        unsafe_allow_html=True
-    )
+    # Lien de téléchargement
+    st.markdown(f"[📥 Télécharger le PDF]({pdf_url})", unsafe_allow_html=True)
 
 
 
