@@ -272,19 +272,22 @@ elif page == "Bilan Médical":
 elif page == "Planification":
     st.title("📄 Planification de Réathlétisation")
 
-    # Charger le PDF localement si uploadé ou depuis une URL avec téléchargement
-    pdf_url = "https://raw.githubusercontent.com/FC-Versailles/care/main/planification_ce.pdf"
+    # Google Drive File ID
+    file_id = "1j3WyPhQGLczI-ud4_VGz5GrkPqy6Ky8F"
+    preview_url = f"https://drive.google.com/file/d/{file_id}/preview"
+    download_url = f"https://drive.google.com/uc?export=download&id={file_id}"
 
-    # Affichage PDF via HTML <embed> (pas Google Docs)
+    # Affichage PDF
     st.markdown(
         f"""
-        <embed src="{pdf_url}" width="100%" height="800px" type="application/pdf">
+        <iframe src="{preview_url}" width="100%" height="800px"></iframe>
         """,
         unsafe_allow_html=True
     )
 
     # Lien de téléchargement
-    st.markdown(f"[📥 Télécharger le PDF]({pdf_url})", unsafe_allow_html=True)
+    st.markdown(f"[📥 Télécharger le PDF]({download_url})", unsafe_allow_html=True)
+
 
 
 
