@@ -24,6 +24,7 @@ from io import BytesIO
 from matplotlib.backends.backend_pdf import PdfPages
 import plotly.express as px
 import base64
+import plotly.graph_objects as go
 
 
 # Constants for Google Sheets
@@ -164,6 +165,7 @@ if page == "Historique du Joueur":
         rtp_data['Date'] = rtp_data['Date'].dt.strftime('%d/%m/%Y')
         st.dataframe(rtp_data, use_container_width=True)
 
+
 elif page == "Rappport de blessure":
     st.title("Rapport de Blessure")
 
@@ -194,9 +196,11 @@ elif page == "Rappport de blessure":
 elif page == "Rapport Quotidien":
     st.title("Rapport Quotidien")
 
+
     # Convertir la colonne Date en datetime
     df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
     df = df.dropna(subset=['Date'])
+    
 
     # Sélecteur de date via calendrier
     selected_date = st.date_input("Sélectionnez une date", value=df['Date'].max(), 
@@ -204,6 +208,55 @@ elif page == "Rapport Quotidien":
 
     # Filtrer les données du jour sélectionné
     daily_data = df[df['Date'].dt.date == selected_date]
+
+    
+    all_players = df['Nom'].dropna().unique()
+    total_players = len(all_players)
+    
+    # Players unavailable today
+    maladie_today = daily_data[daily_data['Motif consultation'].str.lower() == 'maladie']['Nom'].dropna().unique()
+    rtp_today = daily_data[daily_data['Motif consultation'].str.lower() == 'réathlétisation']['Nom'].dropna().unique()
+    absent_today = daily_data[daily_data['Motif consultation'].str.lower() == 'absent']['Nom'].dropna().unique()
+    
+    # Combine both unavailabilities
+    unavailable_players = set(maladie_today).union(set(rtp_today)).union(set(absent_today))
+
+    
+    # Compute number of available players
+    available_players = total_players - len(unavailable_players)
+    
+    # ✅ CALCUL MANQUANT : taux de disponibilité
+    availability_rate = round(100 * available_players / total_players, 1) if total_players > 0 else 0
+    
+    # Affichage console pour vérification
+    # st.write("Disponibles :", available_players)
+    # st.write("Total joueurs :", total_players)
+    # st.write("Taux de dispo :", availability_rate)
+    
+    # Affichage Streamlit
+    if total_players == 0:
+        st.warning("Aucun joueur enregistré ce jour-là. Taux de disponibilité non calculable.")
+    else:
+        st.markdown(f" 📈 Taux de disponibilité pour le {selected_date.strftime('%d/%m/%Y')} : **{availability_rate}%**")
+    
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=availability_rate,
+            domain={'x': [0, 1], 'y': [0, 1]},
+            title={'text': "Taux de disponibilité", 'font': {'size': 12}},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "black"},
+                'steps': [
+                    {'range': [0, 60], 'color': "red"},
+                    {'range': [60, 75], 'color': "orange"},
+                    {'range': [75, 85], 'color': "yellow"},
+                    {'range': [85, 100], 'color': "green"}
+                ],
+            }
+        ))
+        st.plotly_chart(fig, use_container_width=True)
+    
 
     # Dictionnaire des colonnes à afficher par motif
     motif_columns = {
@@ -268,7 +321,6 @@ elif page == "Bilan Médical":
         else:
             st.write(f"Aucun cas de {motif} durant cette semaine.")
             
-
 elif page == "Planification":
     st.title("📄 Planification de Réathlétisation")
 
